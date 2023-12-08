@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mulah Registration</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.min.js"></script>
+<style>
+  body {
+    background-color: #fff;
+    margin: 0;
+    padding: 0;
+    font-family: 'Roboto';
+    text-align: center;
+    display: flex;
+    flex-direction: column; 
+    justify-content: center; 
+    align-items: center; 
+    min-height: 100vh; 
+    padding-bottom: 20px;
+  }
+  .container {
+    width: 300px;    
+    height: 500px;  
+    padding: 50px;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    text-align: left; 
+    margin: 0 auto; 
+    margin-bottom: 20px;
+  }
+  h1 {
+    color: rgba(243,117,31,255); /* Orange color */
+    font-weight: bold; 
+    text-align: center;
+    letter-spacing: 1.5px;
+    font-weight: 700;
+    margin-bottom: 0; 
+  }
+  h2 {
+    font-family: 'Times New Roman', Times, serif; 
+    font-size: 28px; 
+    color: rgba(100,100,100,255); 
+    letter-spacing: 1.5px;
+    font-weight: 700;
+    font-weight: normal;
+    margin-top: 20px; 
+    margin-bottom: 20px; 
+  }
+  .details-prompt {
+    font-style: italic;
+    margin-bottom: 20px;
+  }
+  label {
+    display: block;
+    font-weight: 800;
+    margin-top: 10px;
+  }
+  input[type="text"], input[type="email"], input[type="date"] {
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0 18px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
+  
+  .error-message {
+  color: red;
+  font-style: italic;
+  font-size: 12px; 
+  margin-top: -10px;
+}
+
+  button {
+    width: 100%;
+    background-color: rgba(243,117,31,255); 
+    color: white;
+    padding: 14px;
+    border: none;
+    margin-bottom: 35px;
+    margin-top: 20px;
+    border-radius: 20px;
+    cursor: pointer;
+  }
+  button:hover {
+    background-color: #e68a00;
+  }
+  
+  .footer {
+    font-size: 12px;
+    color: #999;
+    text-align: center;
+    width: 100%;
+  }
+  .birthday-inputs {
+    display: flex;
+    justify-content: space-between;
+  }
+  .birthday-inputs input {
+    flex-grow: 1;
+    margin-right: 10px;
+  }
+  .birthday-inputs input:last-child {
+    margin-right: 0;
+  }
+  .checkbox-label {
+    display: flex;
+    margin-top: 5px;
+  }
+  
+  .checkbox-label {
+    display: flex;
+    align-items: center;
+    margin-top: 5px;
+  }
+  .checkbox-label input[type="checkbox"] {
+    margin-right: 5px;
+  }
+  .checkbox-label label {
+    margin-left: 5px; 
+  }
+</style>
+</head>
+<body>
+    <div id="app" class="container">
+      <h1>MULAH</h1>
+      <h2>Registration</h2>
+      <p class="details-prompt">Please fill up your details.</p>
+      
+      <label for="name">Name</label>
+      <input type="text" id="name" placeholder="Enter Name" v-model="name">
+      <div class="error-message" v-show="!isValidName">*Please insert a name.</div>
+      
+      <label for="birthday">Birthday</label>
+      <div class="birthday-inputs">
+        <input type="text" id="day" placeholder="DD" maxlength="2" v-model="day">
+        <input type="text" id="month" placeholder="MM" maxlength="2" v-model="month">
+        <input type="text" id="year" placeholder="YYYY" maxlength="4" v-model="year">
+      </div>
+      <div class="error-message" v-show="!isValidBirthday">*Please insert your birthday.</div>
+    
+      <label for="email">Email Address</label>
+      <input type="email" id="email" placeholder="Email Address" v-model="email">
+      <div class="error-message" v-show="!isValidEmail">*Please insert a valid email address.</div>
+    
+      <div class="checkbox-label">
+        <input type="checkbox" id="no-email" v-model="noEmail">
+        <label for="no-email" style="font-size: 12px; font-style: italic; color: rgba(100,100,100,255);">No email address</label>
+      </div>
+      <button @click="submitDetails">Continue</button>
+    </div>
+    
+    <div class="footer">
+      Powered by <a href="http://MulahRewards.com">MulahRewards.com</a>
+    </div>
+    
+    <script>
+        new Vue({
+          el: '#app',
+          data: {
+            name: '',
+            day: '',
+            month: '',
+            year: '',
+            email: '',
+            noEmail: false,
+            submitted: false  // Flag to track if the form has been submitted
+          },
+          computed: {
+            isValidName: function() {
+              return !this.submitted || this.name.trim().length > 0;
+            },
+            isValidBirthday: function() {
+              return !this.submitted || (this.day.trim().length > 0 && this.month.trim().length > 0 && this.year.trim().length > 0);
+            },
+            isValidEmail: function() {
+              return !this.submitted || this.noEmail || (this.email.trim().length > 0 && this.email.includes('@'));
+            }
+          },
+          methods: {
+            submitDetails: function() {
+              this.submitted = true; // Set the flag to true when the form is submitted
+              if (this.isValidName && this.isValidBirthday && this.isValidEmail) {
+                var birthday = this.day + '/' + this.month + '/' + this.year;
+                localStorage.setItem('name', this.name);
+                localStorage.setItem('birthday', birthday);
+                localStorage.setItem('email', this.email);
+                window.location.href = 'page3.html';
+              }
+            }
+          }
+        });
+        </script>
+        
+    </body>
+    </html>

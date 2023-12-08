@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mulah Rewards - Check Loyalty Points</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.min.js"></script>
+  <style>
+    body {
+      font-family: 'Roboto', sans-serif;
+      background-color: #fff;
+      margin: 0;
+      padding: 0;
+      text-align: center;
+      display: flex;
+      flex-direction: column; 
+      justify-content: center; 
+      align-items: center; 
+      min-height: 100vh; 
+      padding-bottom: 20px;
+    }
+    .container {
+      width: 300px;    
+      height: 500px;  
+      overflow: auto; 
+      padding: 50px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      text-align: left; 
+      background-color: #fff;
+      margin: 0 auto; 
+      margin-bottom: 20px;
+    }
+    h1 {
+      color: rgba(243,117,31,255); 
+      font-weight: 700;
+      text-align: center; 
+      letter-spacing: 1.5px;
+      margin-bottom: 40px;
+    }
+    .welcome-text {
+      font-size: 42px; 
+      color: rgba(100,100,100,255); 
+      letter-spacing: 1.5px;
+      font-family: 'Times New Roman', Times, serif; 
+      margin-bottom: 55px; 
+    }
+    .loyalty-text {
+      color: rgba(243,117,31,255); 
+      text-align: left;
+      font-size: 15px; 
+      font-weight: 700;
+      margin-bottom: 55px; 
+    }
+    .input-group {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    .country-code-dropdown {
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      margin-right: 10px;
+    }
+    .phone-input {
+      flex-grow: 1;
+      padding: 10px;
+      border: none;
+      border-bottom: 1px solid rgba(100,100,100,255);
+      border-radius: 0;
+    }
+    button {
+      width: 100%;
+      background-color: rgba(243,117,31,255);
+      color: white;
+      padding: 14px;
+      border: none;
+      border-radius: 20px;
+      margin-top: 20px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #e68a00;
+    }
+    .error-message {
+      color: red;
+      font-style: italic;
+      font-size: 12px;
+      margin-top: 10px;
+    }
+    .footer {
+      font-size: 12px;
+      color: #999;
+      text-align: center;
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+  <div id="app" class="container">
+    <h1>MULAH</h1>
+    <div class="welcome-text">Hello,<br>Welcome!</div>
+    <div class="loyalty-text">Check Your Loyalty Points & Rewards</div>
+    
+    <div class="input-group">
+      <select class="country-code-dropdown" v-model="countryCode">
+        <option value="+60">+60</option>
+        <option value="+1">+1</option>
+        <option value="+44">+44</option>
+        <option value="+61">+61</option>
+        <option value="+33">+33</option>
+        <option value="+49">+49</option>
+        <option value="+81">+81</option>
+      </select>
+      <input type="text" class="phone-input" v-model="mobileNumber" placeholder="Enter your mobile number">
+    </div>
+    <div class="error-message" v-if="showError">Invalid number. Please enter the correct mobile number to check loyalty points.</div>
+    
+    <button @click="checkLoyaltyPoints">Check Loyalty Points</button>
+  </div>
+
+  <div class="footer">
+    Powered by <a href="http://MulahRewards.com">MulahRewards.com</a>
+  </div>
+
+  <script>
+    new Vue({
+      el: '#app',
+      data: {
+        countryCode: '+60',
+        mobileNumber: '',
+        showError: false
+      },
+      watch: {
+        // Watch for changes in mobileNumber and countryCode
+        mobileNumber: function(newVal, oldVal) {
+          this.showError = false;
+        },
+        countryCode: function(newVal, oldVal) {
+          this.showError = false;
+        }
+      },
+      methods: {
+        checkLoyaltyPoints() {
+          const fullNumber = this.countryCode + this.mobileNumber;
+          if(fullNumber === "+60173527250") {
+            localStorage.setItem('phoneNumber', fullNumber);
+            window.location.href = 'page2.html';
+          } else {
+            this.showError = true;
+          }
+        }
+      }
+    });
+  </script>
+  
+</body>
+</html>
